@@ -2,11 +2,17 @@
 
 ## Project Overview
 
-This repository contains the Adaptive Team — a self-healing Claude Code agent team for structured software development with human-in-the-loop learning.
+This repository contains the Adaptive Dev Team — a self-healing Claude Code agent team for structured software development with human-in-the-loop learning.
 
-## For Implementation Work
+## Skills
 
-Use `/adaptive-team-implement` to spin up the full team. Use `/adaptive-team-plan` to align on approach first.
+| Skill | What it does |
+|-------|-------------|
+| `/adaptive-team-setup` | Interactive wizard — discovers your codebase, populates `adaptive-team-context/` |
+| `/adaptive-team-plan` | Design review — PO + architect align on approach before implementation |
+| `/adaptive-team-implement` | Full team implementation — devs build in worktrees, reviewers sign off, merge |
+
+**For implementation work**, use `/adaptive-team-implement`. Use `/adaptive-team-plan` first for complex features that benefit from design discussion.
 
 ## Agent Architecture
 
@@ -15,12 +21,12 @@ Use `/adaptive-team-implement` to spin up the full team. Use `/adaptive-team-pla
 - **Learned files** (`.claude/adaptive-team-learned/`) hold accumulated lessons from HITL self-healing
 - **Rules** (`.claude/rules/adaptive-team-rules.md`) define team process
 
-Agents read their role file, then load context and learned files at startup. This separation keeps agent definitions thin and reusable while project knowledge and lessons are isolated and replaceable.
+Agents read their role file, then load context and learned files at startup. This keeps agent definitions thin and reusable while project knowledge and lessons are isolated and replaceable.
 
 ## Key Principles
 
 - **Adaptive learning** — every failure becomes a lesson in the right `adaptive-team-learned/` file
-- **Root-cause routing** — the PO diagnoses whether a problem is requirements, architecture, testing, or process and routes the lesson accordingly
+- **Root-cause routing** — PO diagnoses whether a problem is requirements, architecture, testing, process, or project-wide policy (CLAUDE.md)
 - **One team per session** — add work to existing teams, don't rebuild
 - **Task-scoped devs** — fresh agent per task, no context carry-over
 - **Persistent reviewers** — architect and sdet maintain context across tasks

@@ -65,6 +65,10 @@ Both SATISFIED → PO accepts → dev commits and merges
 
 Max 2 review cycles. Escalate to user after 2 rejections.
 
+## Agent Timeout Protocol
+
+If any agent has not reported back within 2 minutes, the PO checks its status via SendMessage. After 5 minutes of silence, the PO escalates to the user with a description of which agent is unresponsive and what it was working on.
+
 ## Communication
 
 - All members message each other via SendMessage
@@ -74,7 +78,15 @@ Max 2 review cycles. Escalate to user after 2 rejections.
 
 ## File Ownership
 
-Parallel devs get clear file ownership boundaries. No two devs modify the same file.
+Parallel devs get clear file ownership boundaries. PO specifies owned files/directories in each dev's task description. If a dev needs to touch a file outside their boundary, they message the PO to negotiate — never modify unowned files.
+
+## Post-Merge Rollback
+
+If tests fail after merging a worktree to main:
+1. Dev reverts the merge commit (`git revert <merge-commit>`)
+2. Dev creates a new worktree for the fix
+3. Fix goes through the normal review gate
+4. Never attempt fixes directly on main without worktree isolation
 
 ## Commit and Merge Protocol
 

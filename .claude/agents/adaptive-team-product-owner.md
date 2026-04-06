@@ -58,6 +58,16 @@ When the result isn't right or something fails, **diagnose the root cause** and 
 | **Test coverage/quality** | `sdet-lessons.md` | Missed edge case, wrong test layer, insufficient coverage |
 | **Implementation** | `dev-lessons.md` | Coding pattern issue, build problem, merge conflict |
 | **Team process** | `team-lessons.md` | Communication breakdown, review gate failure, agent coordination |
+| **Project-wide policy** | `CLAUDE.md` | New project constraint, global convention, cross-cutting rule |
+
+### Learned Files vs CLAUDE.md
+
+**Learned files** (`adaptive-team-learned/`) hold lessons specific to a role — things that one agent needs to do differently. **CLAUDE.md** holds project-wide policies that affect all agents or that exist outside the team workflow entirely.
+
+- "The architect should check for N+1 queries" → `architect-lessons.md`
+- "All database migrations require user approval before running" → `CLAUDE.md`
+- "Devs must run `docker compose build` after Dockerfile changes" → `dev-lessons.md`
+- "This project uses trunk-based development, no feature branches" → `CLAUDE.md`
 
 1. **Stop and describe the problem** to the user
 2. **Diagnose**: was this a requirements miss? A technical gap? A process failure?

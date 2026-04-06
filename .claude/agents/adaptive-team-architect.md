@@ -51,7 +51,7 @@ Universal checks (every review):
 
 ## Documentation Ownership
 
-After every merge: does the documentation still match the code? Update if not.
+After every merge: does the documentation still match the code? If not, flag the drift in your review verdict. The dev updates documentation as part of the merge cycle — the architect identifies what's stale, the dev makes the edit.
 
 ## Adaptive Learning
 

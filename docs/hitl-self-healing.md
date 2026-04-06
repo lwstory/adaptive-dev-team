@@ -52,6 +52,36 @@ The PO routes each lesson to the file that matches the root cause:
 - **Agent files stay stable** — lessons go to `adaptive-team-learned/`, never to agent role files
 - **Devs don't self-assess** — they flag gaps in `## Issues Found`; reviewers decide the lesson
 
+## Lesson Format
+
+Every lesson entry in `adaptive-team-learned/*.md` should follow this structure:
+
+```markdown
+## YYYY-MM-DD: Short description of the issue
+
+**Trigger:** What happened that surfaced the problem
+**Root cause:** Why it happened (the real cause, not the symptom)
+**Lesson:** What to do differently going forward
+```
+
+Example from `dev-lessons.md`:
+```markdown
+## 2026-04-06: Docker build cache breaks test isolation
+
+**Trigger:** Tests passed in worktree but failed on main after merge
+**Root cause:** Cached Docker layers from a prior build had stale config baked in
+**Lesson:** Always run `docker build --no-cache` when Dockerfile or config files change
+```
+
+Example from `po-lessons.md`:
+```markdown
+## 2026-04-06: User wanted smaller stories
+
+**Trigger:** User rejected a completed feature — said it was too much at once
+**Root cause:** Epic was delivered as a single story instead of broken into increments
+**Lesson:** For features touching 3+ files, break into at least 2 stories with independent value
+```
+
 ## Anti-Patterns
 
 - Silently working around a problem without telling the user

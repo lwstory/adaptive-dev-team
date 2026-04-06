@@ -30,7 +30,7 @@ This framework uses [Claude Code Agent Teams](https://docs.anthropic.com/en/docs
 |-------------|---------|
 | **Claude Code** | v2.1.32 or later (`claude --version`) |
 | **Agent Teams** | Experimental — must be enabled (see below) |
-| **Git** | Required — worktrees used for dev isolation |
+| **Git** | Required — [worktrees](https://git-scm.com/docs/git-worktree) used for dev isolation (isolated working copies on separate branches) |
 
 ### Enable Agent Teams
 
@@ -138,8 +138,9 @@ When something goes wrong, the PO diagnoses root cause and routes the lesson:
 | Test coverage/quality gap | `sdet-lessons.md` |
 | Implementation pattern issue | `dev-lessons.md` |
 | Process/coordination failure | `team-lessons.md` |
+| Project-wide policy | `CLAUDE.md` |
 
-Any pattern that repeats twice gets codified. The team gets better with every session.
+Any pattern that repeats twice gets codified. The team gets better with every session. Learned files should be committed to git — they're part of your project's accumulated knowledge.
 
 ## License
 
