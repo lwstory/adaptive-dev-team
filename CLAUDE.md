@@ -13,6 +13,7 @@ This repository contains the Adaptive Dev Team — a self-healing Claude Code ag
 | `/adaptive-team-start` | Start a session — loads PO role, creates team, spawns architect + sdet |
 | `/adaptive-team-plan` | Design review — PO + architect align on approach before implementation |
 | `/adaptive-team-implement` | Full team implementation — devs build in worktrees, reviewers sign off, merge |
+| `/adaptive-team-learning-moment` | Capture lessons from an issue — PO diagnoses, proposes lessons, user accepts |
 
 **For a full session**, use `/adaptive-team-start` — it loads the PO and keeps the team alive for multiple tasks. For a quick one-off, use `/adaptive-team-implement` directly.
 

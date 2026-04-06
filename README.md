@@ -109,6 +109,7 @@ Or skip planning for straightforward tasks:
 | `/adaptive-team-start` | Project | Loads the PO role onto the main thread, creates a team, spawns architect + sdet. Keeps the team alive for multiple tasks in a session. |
 | `/adaptive-team-plan` | Project | Design review phase — PO + architect align on approach, identify risks, write stories with acceptance criteria. Optional before implementation. |
 | `/adaptive-team-implement` | Project | Full implementation — PO creates stories, architect guides, dev(s) build in worktrees, architect + sdet review, then merge. Can be used standalone or after `/adaptive-team-plan`. |
+| `/adaptive-team-learning-moment` | Project | Capture lessons from an issue — PO diagnoses root cause from conversation context, proposes lessons to the right learned file, user accepts. |
 
 **Typical flows:**
 
@@ -116,6 +117,7 @@ Or skip planning for straightforward tasks:
 Full session:   /adaptive-team-start → describe work → PO manages interactively
 Plan + build:   /adaptive-team-plan <feature> → /adaptive-team-implement
 Quick one-off:  /adaptive-team-implement <task>
+Capture lesson: /adaptive-team-learning-moment <what went wrong>
 ```
 
 ## How It Works
@@ -161,6 +163,7 @@ User request
     adaptive-team-start/           ← start a session (loads PO, creates team, spawns reviewers)
     adaptive-team-plan/            ← design review (PO + Architect)
     adaptive-team-implement/       ← full team implementation
+    adaptive-team-learning-moment/ ← ad-hoc lesson capture
 docs/
   hitl-self-healing.md
 ```
