@@ -12,9 +12,9 @@ Interactive wizard that discovers your codebase and configures the adaptive team
 
 ## Pipeline
 
-### Step 1: Auto-Discover
+### Step 1: Auto-Discover and Set Defaults
 
-Scan the project to detect the tech stack automatically:
+Scan the project to detect the tech stack and pre-populate sensible defaults:
 
 - **Language/framework**: read package.json, *.csproj, pyproject.toml, Cargo.toml, go.mod, etc.
 - **Project structure**: list directories (2 levels), identify source vs test vs docs
@@ -22,17 +22,25 @@ Scan the project to detect the tech stack automatically:
 - **Build system**: Dockerfiles, CI/CD config, build scripts
 - **Infrastructure**: database migrations, message queues, caches
 
-### Step 2: Ask Targeted Questions
+**Auto-detect defaults** (user reviews and overrides as needed):
+- `package.json` detected → default build: `npm test`, test framework: Jest/Vitest (from devDependencies)
+- `*.csproj` detected → default build: `dotnet test`, test framework: xUnit/NUnit (from PackageReference)
+- `pyproject.toml` detected → default build: `pytest`, test framework: pytest
+- `Cargo.toml` detected → default build: `cargo test`
+- `go.mod` detected → default build: `go test ./...`
 
-Present discovery results, then ask what can't be inferred:
+### Step 2: Present Defaults, Ask What Can't Be Inferred
+
+Show auto-detected defaults and ask the user to confirm or override. Only ask questions where auto-detection can't provide an answer:
 
 1. **Architecture style** — Clean Architecture, MVC, microservices, monolith, serverless?
 2. **Code conventions** — DI patterns, error handling strategy, config management?
-3. **Test naming convention** — `MethodName_State_Expected`, `describe/it`, `test_snake_case`?
+3. **Test naming convention** — (pre-filled from detected test files if possible)
 4. **Coverage targets** — 80% overall? 90% core? No formal targets?
-5. **Build/verify command** — `npm test`, `dotnet test`, `cargo test`?
-6. **Documentation locations** — `docs/`, wiki, ADRs, or none yet?
+5. **Build/verify command** — (pre-filled from auto-detect, confirm or override)
+6. **Documentation locations** — (pre-filled if docs/ or wiki/ detected)
 7. **Common quality issues** — what problems come up most in this codebase?
+8. **Merge strategy** — should devs create pull requests or merge directly to the main branch?
 
 ### Step 3: Write Context Files
 

@@ -65,6 +65,10 @@ Both SATISFIED → PO accepts → dev commits and merges
 
 Max 2 review cycles. Escalate to user after 2 rejections.
 
+## Reviewer Context Hygiene
+
+After 3+ review cycles in a session, the PO checks whether adaptive-team-architect and adaptive-team-sdet are still performing well. Signs of degradation: reviews that are shorter or less detailed than earlier ones, missing issues that earlier reviews caught, or repeating generic guidance instead of project-specific feedback. If quality has degraded, spawn a fresh reviewer with a summary of key findings from the session so far.
+
 ## Agent Timeout Protocol
 
 If any agent has not reported back within 5 minutes, the PO checks its status via SendMessage and reports to the user — which agent, what it was working on, and whether it appears stuck or still progressing.
