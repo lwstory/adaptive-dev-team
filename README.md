@@ -50,7 +50,7 @@ This framework uses [Claude Code Agent Teams](https://docs.anthropic.com/en/docs
 ```bash
 mkdir -p ~/.claude/skills/adaptive-team-init
 curl -o ~/.claude/skills/adaptive-team-init/SKILL.md \
-  https://raw.githubusercontent.com/lwstory/adaptive-dev-team/main/.claude/skills/adaptive-team-init/SKILL.md
+  https://raw.githubusercontent.com/lwstory/adaptive-dev-team/master/.claude/skills/adaptive-team-init/SKILL.md
 ```
 
 This makes `/adaptive-team-init` available in any project.
