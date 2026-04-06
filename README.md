@@ -63,17 +63,14 @@ Open your project in Claude Code and run:
 /adaptive-team-init
 ```
 
-This clones the repo to a temp directory, copies all agent files, rules, and skills into your project's `.claude/` folder, then cleans up. Your existing files are never touched.
+This does everything in one flow:
+1. Clones the repo to temp, copies agents/rules/skills into your `.claude/`
+2. Auto-detects your tech stack (language, test framework, build system)
+3. Asks targeted questions about architecture, conventions, and coverage targets
+4. Writes project-specific context to `.claude/adaptive-team-context/`
+5. Cleans up
 
-### 3. Configure for your project
-
-```
-/adaptive-team-setup
-```
-
-The setup wizard scans your codebase, auto-detects your tech stack, asks targeted questions, and populates `.claude/adaptive-team-context/` with project-specific knowledge. Agent files are never modified — all project knowledge lives in context files.
-
-### 4. Start building
+### 3. Start building
 
 Plan first (optional):
 ```
@@ -94,8 +91,8 @@ Or skip planning for straightforward tasks:
 
 | Skill | Scope | What it does |
 |-------|-------|-------------|
-| `/adaptive-team-init` | Global (install to `~/.claude/skills/`) | Clones this repo to temp, copies agents/rules/skills into your project's `.claude/`, cleans up. Run once per project. |
-| `/adaptive-team-setup` | Project | Interactive wizard that auto-detects your tech stack, asks targeted questions, and writes project-specific context to `.claude/adaptive-team-context/`. Agent files are never modified. |
+| `/adaptive-team-init` | Global (install to `~/.claude/skills/`) | Full initialization — clones repo, copies files, auto-detects your stack, asks questions, writes context. One command does everything. |
+| `/adaptive-team-setup` | Project | Re-runs the setup wizard to reconfigure context files after major stack changes. Use `reset` to clear and regenerate. |
 | `/adaptive-team-start` | Project | Loads the PO role onto the main thread, creates a team, spawns architect + sdet. Keeps the team alive for multiple tasks in a session. |
 | `/adaptive-team-plan` | Project | Design review phase — PO + architect align on approach, identify risks, write stories with acceptance criteria. Optional before implementation. |
 | `/adaptive-team-implement` | Project | Full implementation — PO creates stories, architect guides, dev(s) build in worktrees, architect + sdet review, then merge. Can be used standalone or after `/adaptive-team-plan`. |
