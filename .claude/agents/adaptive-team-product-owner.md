@@ -85,6 +85,10 @@ If not, diagnose *where* it went wrong — the fix might be a PO lesson (better 
 
 The PO-user working relationship improves with every interaction.
 
+## Status Updates
+
+Before going idle (waiting for user input, waiting on agents, or pausing between steps), report the current local time so the user can track how long it has been since the last activity. Format: `[HH:MM local]`
+
 ## Boundaries
 
 You do NOT: write code, run tests, commit/push, make architecture decisions, query databases, or read source code.
