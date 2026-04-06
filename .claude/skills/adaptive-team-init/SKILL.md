@@ -10,14 +10,70 @@ Initializes the Adaptive Dev Team framework in your current project. Clones the 
 
 **This skill is installed globally** (`~/.claude/skills/adaptive-team-init/`) so it's available in any project.
 
-## Prerequisites
-
-- Git installed
-- Claude Code with Agent Teams enabled (see repo README)
-
 ## Pipeline
 
-### Step 1: Check for Existing Installation
+### Step 1: Check Dependencies
+
+Verify all prerequisites are met. For each check, report the result and help fix if missing.
+
+**Required:**
+
+```bash
+# 1. Git installed
+git --version
+# If missing: "Git is required. Install from https://git-scm.com/"
+
+# 2. Claude Code version (needs Agent Teams support)
+claude --version
+# If < v2.1.32: "Claude Code v2.1.32+ required. Run: claude update"
+
+# 3. Agent Teams enabled
+# Check settings for CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS
+cat ~/.claude/settings.json 2>/dev/null | grep -q "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"
+# If not found, also check project-level:
+cat .claude/settings.json 2>/dev/null | grep -q "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS"
+# If neither found: offer to enable it
+```
+
+**If Agent Teams is not enabled**, ask the user: "Agent Teams is not enabled. Add it to your settings? (global or project-level)"
+
+If yes, write the setting:
+```json
+// Add to env block in the appropriate settings.json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
+```
+
+**Optional (check and report):**
+
+```bash
+# 4. Current directory is a git repo
+git rev-parse --is-inside-work-tree
+# If not: "This directory is not a git repo. The team uses worktrees — initialize with git init?"
+
+# 5. Project has source files (not an empty repo)
+ls -A | grep -v "^\.git$" | head -1
+# If empty: warn "This repo appears empty. Setup wizard will have nothing to auto-detect."
+```
+
+Report a summary before proceeding:
+```
+Dependency check:
+  ✓ Git: v2.43.0
+  ✓ Claude Code: v2.1.35
+  ✓ Agent Teams: enabled (global)
+  ✓ Git repo: yes
+  ✓ Project has source files: yes
+
+All prerequisites met. Proceeding with installation.
+```
+
+If any required dependency is missing and can't be fixed, stop and tell the user what to do.
+
+### Step 2: Check for Existing Installation
 
 Check if `.claude/agents/adaptive-team-product-owner.md` already exists.
 
