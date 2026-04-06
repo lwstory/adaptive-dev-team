@@ -49,10 +49,20 @@ The `/adaptive-team-init` skill will check for this and offer to enable it autom
 
 ### 1. Install the init skill (once, globally)
 
+**macOS / Linux:**
+
 ```bash
 mkdir -p ~/.claude/skills/adaptive-team-init
 curl -o ~/.claude/skills/adaptive-team-init/SKILL.md \
   https://raw.githubusercontent.com/lwstory/adaptive-dev-team/master/.claude/skills/adaptive-team-init/SKILL.md
+```
+
+**Windows (PowerShell):**
+
+```powershell
+New-Item -ItemType Directory -Force -Path "$HOME\.claude\skills\adaptive-team-init"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/lwstory/adaptive-dev-team/master/.claude/skills/adaptive-team-init/SKILL.md" `
+  -OutFile "$HOME\.claude\skills\adaptive-team-init\SKILL.md"
 ```
 
 This makes `/adaptive-team-init` available in any project.
