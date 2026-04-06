@@ -90,6 +90,24 @@ Or skip planning for straightforward tasks:
 /adaptive-team-implement Fix the broken login redirect
 ```
 
+## Skills Reference
+
+| Skill | Scope | What it does |
+|-------|-------|-------------|
+| `/adaptive-team-init` | Global (install to `~/.claude/skills/`) | Clones this repo to temp, copies agents/rules/skills into your project's `.claude/`, cleans up. Run once per project. |
+| `/adaptive-team-setup` | Project | Interactive wizard that auto-detects your tech stack, asks targeted questions, and writes project-specific context to `.claude/adaptive-team-context/`. Agent files are never modified. |
+| `/adaptive-team-start` | Project | Loads the PO role onto the main thread, creates a team, spawns architect + sdet. Keeps the team alive for multiple tasks in a session. |
+| `/adaptive-team-plan` | Project | Design review phase — PO + architect align on approach, identify risks, write stories with acceptance criteria. Optional before implementation. |
+| `/adaptive-team-implement` | Project | Full implementation — PO creates stories, architect guides, dev(s) build in worktrees, architect + sdet review, then merge. Can be used standalone or after `/adaptive-team-plan`. |
+
+**Typical flows:**
+
+```
+Full session:   /adaptive-team-start → describe work → PO manages interactively
+Plan + build:   /adaptive-team-plan <feature> → /adaptive-team-implement
+Quick one-off:  /adaptive-team-implement <task>
+```
+
 ## How It Works
 
 ```
@@ -130,6 +148,7 @@ User request
   skills/
     adaptive-team-init/            ← global installer (pulls repo, copies files)
     adaptive-team-setup/           ← project setup wizard (configures context)
+    adaptive-team-start/           ← start a session (loads PO, creates team, spawns reviewers)
     adaptive-team-plan/            ← design review (PO + Architect)
     adaptive-team-implement/       ← full team implementation
 docs/
