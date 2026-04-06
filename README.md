@@ -34,6 +34,8 @@ This framework uses [Claude Code Agent Teams](https://docs.anthropic.com/en/docs
 
 ### Enable Agent Teams
 
+The `/adaptive-team-init` skill will check for this and offer to enable it automatically. To set it up manually:
+
 ```json
 // ~/.claude/settings.json or .claude/settings.json
 {
@@ -64,11 +66,12 @@ Open your project in Claude Code and run:
 ```
 
 This does everything in one flow:
-1. Clones the repo to temp, copies agents/rules/skills into your `.claude/`
-2. Auto-detects your tech stack (language, test framework, build system)
-3. Asks targeted questions about architecture, conventions, and coverage targets
-4. Writes project-specific context to `.claude/adaptive-team-context/`
-5. Cleans up
+1. Checks dependencies (Git, Claude Code version, Agent Teams enabled, git repo) — fixes what it can
+2. Clones the repo to temp, copies agents/rules/skills into your `.claude/`
+3. Auto-detects your tech stack (language, test framework, build system)
+4. Asks targeted questions about architecture, conventions, and coverage targets
+5. Writes project-specific context to `.claude/adaptive-team-context/`
+6. Cleans up
 
 ### 3. Start building
 
@@ -143,8 +146,8 @@ User request
   rules/
     adaptive-team-rules.md
   skills/
-    adaptive-team-init/            ← global installer (pulls repo, copies files)
-    adaptive-team-setup/           ← project setup wizard (configures context)
+    adaptive-team-init/            ← global installer (deps, files, auto-detect, configure)
+    adaptive-team-setup/           ← reconfigure context after stack changes
     adaptive-team-start/           ← start a session (loads PO, creates team, spawns reviewers)
     adaptive-team-plan/            ← design review (PO + Architect)
     adaptive-team-implement/       ← full team implementation
