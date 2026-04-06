@@ -67,7 +67,7 @@ Max 2 review cycles. Escalate to user after 2 rejections.
 
 ## Agent Timeout Protocol
 
-If any agent has not reported back within 2 minutes, the PO checks its status via SendMessage. After 5 minutes of silence, the PO escalates to the user with a description of which agent is unresponsive and what it was working on.
+If any agent has not reported back within 5 minutes, the PO checks its status via SendMessage and reports to the user — which agent, what it was working on, and whether it appears stuck or still progressing.
 
 ## Communication
 

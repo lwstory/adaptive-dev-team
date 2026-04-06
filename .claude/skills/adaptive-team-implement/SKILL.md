@@ -74,7 +74,7 @@ PO checks: did anything go wrong? Did the user get what they expected?
 
 ## Agent Timeout Protocol
 
-If any agent has not reported back within 2 minutes, the PO checks its status. After 5 minutes of silence, escalate to the user.
+If any agent has not reported back within 5 minutes, the PO checks its status and reports to the user — which agent, what it was working on, and whether it appears stuck or still progressing.
 
 ## When to Use
 
