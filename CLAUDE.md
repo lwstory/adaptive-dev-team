@@ -2,28 +2,26 @@
 
 ## Project Overview
 
-This repository contains a reusable Claude Code agent team model for structured software development. The team follows a Product Owner-led workflow with Architect and SDET Lead review gates.
+This repository contains the Adaptive Team — a self-healing Claude Code agent team for structured software development with human-in-the-loop learning.
 
-## Development Work — Use the Dev Team Skill
+## For Implementation Work
 
-**When technical implementation is requested**, use `/dev-team` to spin up a proper team. Do NOT implement code changes directly on the main thread.
+Use `/adaptive-team-implement` to spin up the full team. Use `/adaptive-team-plan` to align on approach first.
 
-The skill creates a Product Owner-led team with Architect, SDET Lead, and disposable Dev agents following the roles and review gates defined in `.claude/rules/team-rules.md`.
+## Agent Architecture
 
-## Working with This Repository
+- **Agent files** (`.claude/agents/adaptive-team-*.md`) define role identity only (~100 lines each)
+- **Context files** (`.claude/adaptive-team-context/`) hold project-specific knowledge — populated by `/adaptive-team-setup`
+- **Learned files** (`.claude/adaptive-team-learned/`) hold accumulated lessons from HITL self-healing
+- **Rules** (`.claude/rules/adaptive-team-rules.md`) define team process
 
-- Agent role files in `.claude/agents/` define how each specialized agent should behave
-- Rules in `.claude/rules/` define team processes and constraints
-- Skills in `.claude/skills/` define pipeline commands
-- All agents should read their role file before starting work
-- The PO runs on the main thread; all other roles are subagents
-- Devs always work in worktrees for isolation
-- Every task passes through Architect + SDET Lead review before acceptance
+Agents read their role file, then load context and learned files at startup. This separation keeps agent definitions thin and reusable while project knowledge and lessons are isolated and replaceable.
 
 ## Key Principles
 
-- **No silent workarounds** — surface operational failures and fix them in role files
-- **HITL self-healing** — every repeated failure becomes a permanent rule improvement
-- **One team per session** — add work to the existing team, don't rebuild
+- **Adaptive learning** — every failure becomes a lesson in the right `adaptive-team-learned/` file
+- **Root-cause routing** — the PO diagnoses whether a problem is requirements, architecture, testing, or process and routes the lesson accordingly
+- **One team per session** — add work to existing teams, don't rebuild
 - **Task-scoped devs** — fresh agent per task, no context carry-over
-- **Persistent reviewers** — Architect and SDET Lead stay alive across tasks
+- **Persistent reviewers** — architect and sdet maintain context across tasks
+- **Worktree isolation** — all devs work in worktrees, merge only after review
