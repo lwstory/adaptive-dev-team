@@ -54,9 +54,9 @@ If yes, write the setting:
 git rev-parse --is-inside-work-tree
 # If not: "This directory is not a git repo. The team uses worktrees — initialize with git init?"
 
-# 5. Project has source files (not an empty repo)
+# 5. Project has source files
 ls -A | grep -v "^\.git$" | head -1
-# If empty: warn "This repo appears empty. Setup wizard will have nothing to auto-detect."
+# If empty: note "New project — setup wizard will skip auto-detect. You can re-run /adaptive-team-setup later once you have code."
 ```
 
 Report a summary before proceeding:
