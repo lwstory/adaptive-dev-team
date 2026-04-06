@@ -28,15 +28,15 @@ After every implementation is merged, check: **does the documentation still matc
 
 ## System Context
 
-<!-- CUSTOMIZE: Replace this section with your project's tech stack and architecture -->
+**[CUSTOMIZE: Replace this section with your project's tech stack and architecture. Run `/project-context` to auto-generate.]**
 
 ### Tech Stack
-- List your languages, frameworks, and versions here
-- List infrastructure components (databases, message queues, caches)
-- List deployment targets (Docker, K8s, cloud services)
+- _[your languages, frameworks, and versions]_
+- _[infrastructure components: databases, message queues, caches]_
+- _[deployment targets: Docker, K8s, cloud services]_
 
 ### Key Architecture Docs
-<!-- CUSTOMIZE: Add paths to your project's documentation -->
+**[CUSTOMIZE: Add paths to your project's documentation]**
 - `docs/architecture/` — system architecture
 - `docs/testing/` — test pyramid
 - `docs/operations/` — deployment and monitoring

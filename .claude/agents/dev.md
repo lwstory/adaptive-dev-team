@@ -41,15 +41,15 @@ If you notice something during implementation that feels like a gap in guidance 
 
 ## System Context
 
-<!-- CUSTOMIZE: Replace this section with your project's tech stack -->
+**[CUSTOMIZE: Replace this section with your project's tech stack. Run `/project-context` to auto-generate.]**
 
 ### Tech Stack
-- List your languages, frameworks, and versions here
-- List infrastructure components
-- List test frameworks and patterns
+- _[your languages, frameworks, and versions]_
+- _[infrastructure components]_
+- _[test frameworks and patterns]_
 
 ### Key Reference Docs
-<!-- CUSTOMIZE: Add paths to your project's documentation -->
+**[CUSTOMIZE: Add paths to your project's documentation]**
 - `docs/architecture/` — system architecture
 - `docs/testing/` — test pyramid
 - `docs/operations/` — deployment and operations
@@ -62,7 +62,7 @@ If you notice something during implementation that feels like a gap in guidance 
 - Config via options/settings pattern — never read env vars directly in services
 
 ### Infrastructure Patterns
-<!-- CUSTOMIZE: Add your project's infrastructure patterns -->
+**[CUSTOMIZE: Add your project's infrastructure patterns]**
 - Database queries use parameterized inputs (no string concatenation)
 - Services have health checks and proper dependency ordering
 
@@ -79,7 +79,7 @@ Every code change must include tests. The type of test depends on what changed.
 - **Integration tests**: required when modifying infrastructure clients. Verify serialization, request format, error mapping, and retry logic.
 - **Component tests**: required when modifying pipeline or workflow orchestration. Verify end-to-end flow with faked boundaries.
 
-<!-- CUSTOMIZE: Add your project's mock/fake patterns -->
+**[CUSTOMIZE: Add your project's mock/fake patterns]**
 
 ## Commit and Merge Protocol
 

@@ -21,6 +21,67 @@ A set of Claude Code agent definitions, rules, and skills that spin up a complet
 - **Task-scoped devs** — fresh context per task prevents bias and enables parallelism
 - **Persistent reviewers** — Architect and SDET Lead maintain context across tasks
 
+## Prerequisites
+
+This framework uses [Claude Code Agent Teams](https://docs.anthropic.com/en/docs/claude-code/agent-teams), which enables multi-agent coordination with peer-to-peer messaging, shared task lists, and independent context windows per teammate.
+
+### Requirements
+
+| Requirement | Details |
+|-------------|---------|
+| **Claude Code** | v2.1.32 or later (`claude --version`) |
+| **Agent Teams** | Experimental feature — must be enabled (see below) |
+| **Git** | Required — worktrees are used for dev isolation |
+| **Existing project** | The team needs a codebase to work on with an existing test suite |
+
+### Enable Agent Teams
+
+Agent Teams is experimental and disabled by default. Enable it by adding the environment variable to your Claude Code settings:
+
+**Option A: Global settings** (`~/.claude/settings.json`):
+```json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
+```
+
+**Option B: Per-project** (`.claude/settings.json` in your project root):
+```json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
+```
+
+**Option C: Shell environment**:
+```bash
+export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+```
+
+### How Teams Differ from Subagents
+
+If you've used Claude Code's `Agent` tool (subagents), Teams are a higher-level primitive:
+
+| | Subagents (`Agent` tool) | Agent Teams |
+|---|---|---|
+| **Context** | Shares parent's session | Independent context window per teammate |
+| **Communication** | Reports back to parent only | Peer-to-peer messaging between teammates |
+| **Task tracking** | No shared state | Shared task list across team |
+| **Lifecycle** | Ephemeral | Persistent for the session (or task-scoped) |
+| **Coordination** | Parent orchestrates | Lead + teammates self-coordinate |
+
+This framework uses Teams because the Architect and SDET Lead need to message each other directly, maintain independent context, and persist across multiple task cycles.
+
+### Known Limitations
+
+- One team per session (cannot run two teams simultaneously)
+- No nested teams (teammates cannot spawn sub-teams)
+- Token costs scale linearly with teammates — expect higher usage than single-session workflows
+- Persistent reviewers (Architect, SDET Lead) may hit context limits after 5-6 detailed review cycles in a single session
+
 ## Setup
 
 ### 1. Copy into your project
@@ -50,7 +111,7 @@ This skill scans your codebase and outputs a structured context summary covering
 
 ### 3. Paste the context into agent files
 
-Take the output from `/project-context` and use it to fill in the `<!-- CUSTOMIZE -->` sections in each agent file:
+Take the output from `/project-context` and use it to fill in the **[CUSTOMIZE]** sections in each agent file (these are bold-formatted markers visible in both raw and rendered markdown):
 
 | Agent File | What to customize |
 |-----------|-------------------|

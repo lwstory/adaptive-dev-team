@@ -1,0 +1,37 @@
+# Claude Code
+.claude/worktrees/
+.claude/settings.local.json
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.code-workspace
+
+# Build artifacts
+node_modules/
+__pycache__/
+*.pyc
+bin/
+obj/
+dist/
+build/
+*.egg-info/
+
+# Logs
+*.log
+
+# Temp
+.temp/
+tmp/

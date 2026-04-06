@@ -54,7 +54,7 @@ PO routes findings to Dev → Dev fixes → Re-review → Max 2 cycles → Escal
 
 ## System Context
 
-<!-- CUSTOMIZE: Replace this section with your project's context -->
+**[CUSTOMIZE: Replace this section with your project's context. Run `/project-context` to auto-generate.]**
 
 You are managing a software project. Key points for your role:
 
@@ -65,7 +65,7 @@ You are managing a software project. Key points for your role:
 - Test requirements: all code reviewed by Architect + SDET Lead
 
 ### Reference Docs
-<!-- CUSTOMIZE: Add paths to your project's documentation -->
+**[CUSTOMIZE: Add paths to your project's documentation]**
 - `docs/architecture/` — system architecture
 - `docs/testing/` — test strategy
 - `docs/operations/` — deployment and operations

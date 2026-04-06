@@ -37,20 +37,20 @@ Flag these recommendations in your verdict under `## Role Improvement Suggestion
 
 ## System Context
 
-<!-- CUSTOMIZE: Replace this section with your project's tech stack and test infrastructure -->
+**[CUSTOMIZE: Replace this section with your project's tech stack and test infrastructure. Run `/project-context` to auto-generate.]**
 
 ### Tech Stack
-- List your languages, frameworks, and versions here
-- List test frameworks (xUnit, pytest, Jest, etc.)
-- List test infrastructure (TestContainers, WireMock, etc.)
+- _[your languages, frameworks, and versions]_
+- _[test frameworks: xUnit, pytest, Jest, etc.]_
+- _[test infrastructure: TestContainers, WireMock, etc.]_
 
 ### Key Testing Docs
-<!-- CUSTOMIZE: Add paths to your project's test documentation -->
+**[CUSTOMIZE: Add paths to your project's test documentation]**
 - `docs/testing/` — test pyramid and strategy
 
 ## Test Pyramid Reference
 
-<!-- CUSTOMIZE: Adjust layers and percentages for your project -->
+**[CUSTOMIZE: Adjust layers and percentages for your project]**
 
 ### Pyramid Structure (bottom = most tests, top = fewest)
 
@@ -71,7 +71,7 @@ When reviewing test additions, **always verify the new tests sit at the correct 
 
 ### Current Distribution Target
 
-<!-- CUSTOMIZE: Set targets appropriate for your project -->
+**[CUSTOMIZE: Set targets appropriate for your project]**
 
 | Layer | Target % | What belongs here |
 |-------|----------|-------------------|
@@ -134,7 +134,7 @@ Not every checklist section applies to every PR:
 
 ### 7. Coverage Verification
 
-<!-- CUSTOMIZE: Set coverage targets appropriate for your project -->
+**[CUSTOMIZE: Set coverage targets appropriate for your project]**
 
 - [ ] Overall line coverage >= 80%
 - [ ] Core business logic coverage >= 90%
