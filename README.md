@@ -45,22 +45,35 @@ This framework uses [Claude Code Agent Teams](https://docs.anthropic.com/en/docs
 
 ## Setup
 
-### 1. Copy into your project
+### 1. Install the init skill (once, globally)
 
 ```bash
-cp -r adaptive-dev-team/.claude/ your-project/.claude/
-cp adaptive-dev-team/CLAUDE.md your-project/CLAUDE.md
+mkdir -p ~/.claude/skills/adaptive-team-init
+curl -o ~/.claude/skills/adaptive-team-init/SKILL.md \
+  https://raw.githubusercontent.com/lwstory/adaptive-dev-team/main/.claude/skills/adaptive-team-init/SKILL.md
 ```
 
-### 2. Run the setup wizard
+This makes `/adaptive-team-init` available in any project.
+
+### 2. Initialize in your project
+
+Open your project in Claude Code and run:
+
+```
+/adaptive-team-init
+```
+
+This clones the repo to a temp directory, copies all agent files, rules, and skills into your project's `.claude/` folder, then cleans up. Your existing files are never touched.
+
+### 3. Configure for your project
 
 ```
 /adaptive-team-setup
 ```
 
-This scans your codebase, asks targeted questions, and populates `.claude/adaptive-team-context/` with your project's tech stack, architecture patterns, test conventions, and review checklist. Agent files are never modified — all project knowledge lives in context files.
+The setup wizard scans your codebase, auto-detects your tech stack, asks targeted questions, and populates `.claude/adaptive-team-context/` with project-specific knowledge. Agent files are never modified — all project knowledge lives in context files.
 
-### 3. Start building
+### 4. Start building
 
 Plan first (optional):
 ```
@@ -115,7 +128,8 @@ User request
   rules/
     adaptive-team-rules.md
   skills/
-    adaptive-team-setup/           ← project setup wizard
+    adaptive-team-init/            ← global installer (pulls repo, copies files)
+    adaptive-team-setup/           ← project setup wizard (configures context)
     adaptive-team-plan/            ← design review (PO + Architect)
     adaptive-team-implement/       ← full team implementation
 docs/

@@ -8,6 +8,7 @@ This repository contains the Adaptive Dev Team — a self-healing Claude Code ag
 
 | Skill | What it does |
 |-------|-------------|
+| `/adaptive-team-init` | Install the framework into a project (global skill — pulls repo, copies files) |
 | `/adaptive-team-setup` | Interactive wizard — discovers your codebase, populates `adaptive-team-context/` |
 | `/adaptive-team-plan` | Design review — PO + architect align on approach before implementation |
 | `/adaptive-team-implement` | Full team implementation — devs build in worktrees, reviewers sign off, merge |
