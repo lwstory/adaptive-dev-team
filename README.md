@@ -21,12 +21,51 @@ A set of Claude Code agent definitions, rules, and skills that spin up a complet
 - **Task-scoped devs** — fresh context per task prevents bias and enables parallelism
 - **Persistent reviewers** — Architect and SDET Lead maintain context across tasks
 
-## Quick Start
+## Setup
 
-1. Copy `.claude/agents/`, `.claude/rules/`, and `.claude/skills/` into your project
-2. Create a `CLAUDE.md` in your project root (see `CLAUDE.md` in this repo for the template)
-3. Customize the agent files with your project's tech stack and patterns
-4. Use the `/dev-team` skill to spin up the team
+### 1. Copy into your project
+
+Copy the `.claude/` directory into your project root:
+
+```bash
+cp -r claude-dev-team/.claude/ your-project/.claude/
+```
+
+Also copy or merge the `CLAUDE.md` into your project root — it tells Claude Code to use `/dev-team` for implementation work.
+
+### 2. Run `/project-context` to auto-configure
+
+Once the files are in your project, open Claude Code in your project directory and run:
+
+```
+/project-context
+```
+
+This skill scans your codebase and outputs a structured context summary covering:
+- Tech stack (languages, frameworks, versions)
+- Project structure (directories, modules)
+- Test infrastructure (frameworks, patterns, current coverage)
+- Build system (Docker, CI/CD, build commands)
+- Code patterns (DI, config, error handling conventions)
+
+### 3. Paste the context into agent files
+
+Take the output from `/project-context` and use it to fill in the `<!-- CUSTOMIZE -->` sections in each agent file:
+
+| Agent File | What to customize |
+|-----------|-------------------|
+| `architect.md` | Tech stack, architecture docs, review checklist items specific to your stack |
+| `sdet.md` | Test frameworks, pyramid targets, coverage thresholds, mock/fake patterns |
+| `dev.md` | Code standards, test requirements, build/commit commands |
+| `product-owner.md` | Project description, reference doc paths |
+
+### 4. Use `/dev-team` to start building
+
+```
+/dev-team Add a new REST endpoint for user profiles
+```
+
+The skill spins up the full team — PO writes stories, Architect provides guidance, Dev builds in a worktree, reviewers sign off, then it merges.
 
 ## How It Works
 
@@ -66,17 +105,11 @@ The team gets better over time. No silent workarounds.
   skills/
     dev-team/
       SKILL.md         — the skill that spins up the team
+    project-context/
+      SKILL.md         — auto-discover project context for agent customization
+docs/
+  hitl-self-healing.md — detailed HITL self-healing process documentation
 ```
-
-## Customization
-
-The agent files ship with generic placeholders. To adapt for your project:
-
-1. **`architect.md`** — Add your tech stack, review checklist items, architecture docs
-2. **`sdet.md`** — Add your test pyramid, coverage targets, test patterns
-3. **`dev.md`** — Add your code standards, test requirements, commit protocol
-4. **`product-owner.md`** — Add your project context, routing rules
-5. **`team-rules.md`** — Adjust team composition if needed
 
 ## License
 
