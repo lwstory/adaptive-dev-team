@@ -1,89 +1,96 @@
 ---
 name: adaptive-team-implement
-description: "Spin up the full adaptive dev team to implement technical work. Devs build in worktrees, reviewers sign off, then merge."
+description: "Spin up the full adaptive dev team to implement technical work. Reviewers brief the dev, dev builds in a worktree, reviewers sign off, then merge."
 argument-hint: "<description of the work to implement>"
 ---
 
 # Adaptive Team Implement
 
-Spins up the full development team to implement technical work. Follows the roles and processes in `.claude/rules/adaptive-team-rules.md`.
-
-**Use for any technical implementation — features, fixes, refactoring, tests.**
+Full development pipeline with PM context discipline, shift-left briefings, architect-chosen dev model, and direct reviewer→dev feedback.
 
 ## Pipeline
 
-### Step 0: PO Startup
+### Step 0: PM Recovery / Grounding
 
-The main thread acts as adaptive-team-product-owner. Complete your startup sequence:
-1. Read `.claude/agents/adaptive-team-product-owner.md` (your role)
-2. Read `.claude/rules/adaptive-team-rules.md` (team process)
-3. Read all files in `.claude/adaptive-team-context/` (project knowledge). If the directory contains only `.gitkeep`, prompt the user to run `/adaptive-team-setup` first.
-4. Read all files in `.claude/adaptive-team-learned/` (accumulated lessons). If empty, skip — lessons will accumulate over time.
+PM reads, in order:
+1. `.claude/rules/adaptive-team-rules.md`
+2. `.claude/adaptive-team-state/current-session.md` (initialize from canonical structure in rules if missing)
+3. `~/.claude/pm-user-lessons.md` (user-global)
+4. `.claude/adaptive-team-learned/pm-lessons.md` (project-PM)
+5. `TaskList`
+
+### Step 0.5: Ambiguity Check (P2 — auto-consult)
+
+Before spawning anything: can the user's acceptance criteria be expressed in **one declarative sentence**? If not, route to `/adaptive-team-consult` first. Ambiguity is a signal; consult is cheap; bad implementation isn't. Do not bypass.
 
 ### Step 1: Create or Join Team
 
-If a team already exists from a prior `/adaptive-team-plan` or `/adaptive-team-implement`, add work to it — do NOT delete and recreate.
+If a team exists, join it — do not recreate. Otherwise `TeamCreate`. Update `current-session.md`.
 
-If no team exists:
-```
-TeamCreate(team_name="<descriptive-name>", description="<what the work is>")
-```
+### Step 2: Break Down Work
 
-### Step 2: PO Creates Stories
+PM creates epic / stories / tasks via `TaskCreate`. Each task has clear acceptance criteria and file-ownership boundaries.
 
-If work was planned via `/adaptive-team-plan`, reference existing tasks. Otherwise, create them now:
-- Epic, stories with acceptance criteria, tasks (TaskCreate)
-- Do NOT proceed to Step 3 until tasks exist.
+### Step 3: Spawn Persistent Reviewers by Signal
 
-### Step 3: Spawn Architect
+Always spawn: `architect`, `sdet` (code is being written).
+Add on signal (per Consult Mode rubric): `llm-expert`, `database`.
 
-Spawn adaptive-team-architect (persistent, `model: "opus"`). Design guidance before devs start.
+Use deterministic names. Each reviewer completes its startup sequence.
 
-### Step 4: Spawn SDET
+### Step 4: Shift-Left Briefings + Dev Model Selection
 
-Spawn adaptive-team-sdet (persistent, `model: "opus"`). Test strategy and expectations.
+For each task, PM asks each relevant reviewer to SendMessage a plain-English briefing. Briefings are:
+- Principle-first, task-specific
+- Not code dumps
+
+PM **also asks the `architect`** which model the dev should use for this task (Sonnet for straightforward, Opus for complex multi-file). Architect replies with the model choice.
 
 ### Step 5: Spawn Dev(s)
 
-Spawn adaptive-team-dev (disposable, `model: "sonnet"` for straightforward tasks, `model: "opus"` for complex multi-file work, always `isolation: "worktree"`):
-- One dev per task with clear acceptance criteria
-- For parallel devs, declare file ownership boundaries in each dev's task description
-- Devs report back when done — do NOT commit
+For each task: `Agent` with `name: "dev"` (or `dev-<n>` for parallel), `isolation: "worktree"`, and the `model` value provided by the architect.
+
+The dev:
+- Reads role file, rules, dev-lessons, briefings, and the specific files in the task description
+- Does **not** read the whole codebase
+- Implements; runs targeted tests; may confer with reviewers via SendMessage
+- Runs the full suite; reports completion to PM (not to reviewers)
 
 ### Step 6: Review Gate
 
-Route to both reviewers. They may review in parallel:
-1. adaptive-team-architect reviews code → SATISFIED/UNSATISFIED
-2. adaptive-team-sdet reviews tests → SATISFIED/UNSATISFIED
-3. Both SATISFIED → PO accepts → dev commits and merges
-4. UNSATISFIED → route findings to dev → fix → re-review (max 2 cycles)
+PM routes to each relevant reviewer. Each reviewer:
+- Reads the dev's completion report and code as needed
+- SendMessages required changes **directly to the dev**
+- Writes full findings to `.claude/adaptive-team-reviews/<story>/<task>/<reviewer>-<cycle>.md`
+- Returns a verdict to PM in the strict 3-line format
 
-If post-merge tests fail: dev reverts the merge commit (`git revert`), then fixes in a new worktree. Never attempt fixes directly on main without isolation.
+If UNSATISFIED: dev may surface concerns to the reviewer (information, not pushback). Reviewer weighs input and decides. Dev implements feedback. Re-review. Max 2 cycles → escalate to user.
 
-### Step 7: Adaptive Learning
+On UNSATISFIED, reviewer self-reflects: *did I brief adequately?* Proposes a lesson (→ own file if inadequate briefing, → `dev-lessons.md` if dev side) to PM → user for approval.
 
-PO checks: did anything go wrong? Did the user get what they expected?
-- Diagnose root cause and route lessons to the correct file (see routing table in adaptive-team-product-owner.md)
-- Project-wide policies go to `CLAUDE.md`, role-specific lessons go to `adaptive-team-learned/`
+### Step 7: Merge
 
-### Step 8: Report
+All SATISFIED → PM accepts → dev commits in worktree → merges to main → runs full tests on main → final reviewer sign-off on main → dev shut down. Update `current-session.md`.
 
-- Report summary to user (what was delivered, test results, any open items)
-- Ask the user if they have more work or if the session is complete
-- Only delete the team (TeamDelete) if the user confirms all work is done
+### Step 8: Post-Merge Rollback (if needed)
 
-## Agent Timeout Protocol
+Post-merge failures: dev reverts the merge commit, creates a new worktree for the fix. Back through the gate. Never fix directly on main.
 
-If any agent has not reported back within 5 minutes, the PO checks its status and reports to the user — which agent, what it was working on, and whether it appears stuck or still progressing.
+### Step 9: Retrospective
+
+PM checks with user: did the result match what was wanted? Any issues → route to `/adaptive-team-learning-moment`.
+
+Delete the team only when user confirms all work is complete.
+
+## Agent Timeout
+
+Any team member silent >5 minutes → PM checks via SendMessage, reports status to user.
 
 ## When to Use
 
-- New features, bug fixes, refactoring, adding tests
-- Infrastructure changes (Docker, config, CI/CD)
-- Any technical work that needs code changes
+Any technical work that requires code changes.
 
 ## When NOT to Use
 
-- Simple one-line config edits
-- Documentation-only changes
-- Planning/design review only (use `/adaptive-team-plan` instead)
+- Design / approach discussion only → `/adaptive-team-consult`
+- Capture a lesson → `/adaptive-team-learning-moment`

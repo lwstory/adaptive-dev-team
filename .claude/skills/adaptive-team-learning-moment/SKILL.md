@@ -1,94 +1,89 @@
 ---
 name: adaptive-team-learning-moment
-description: "Capture lessons from an issue — PO diagnoses root cause from conversation context, proposes lessons, user accepts."
+description: "Capture lessons from an issue. Any reviewer or PM may propose; PM routes through the user for approval; approved text lands in the right file."
 argument-hint: "[optional: brief description of what went wrong]"
 ---
 
 # Adaptive Team Learning Moment
 
-The PO reviews the current conversation to understand what went wrong, diagnoses root cause, and proposes lessons to add to the appropriate `adaptive-team-learned/` files.
-
-**Use this when something went wrong and you want to capture the lesson before moving on.**
+Any reviewer (or the PM itself) can propose a lesson. **Every lesson routes through the user for explicit approval before being written.**
 
 ## Pipeline
 
-### Step 1: PO Startup (if not already active)
+### Step 0: PM Recovery / Grounding
 
-If not already in PO mode, read:
-1. `.claude/agents/adaptive-team-product-owner.md` (role identity)
-2. `.claude/rules/adaptive-team-rules.md` (team process)
-3. All files in `.claude/adaptive-team-context/` (project knowledge)
-4. All files in `.claude/adaptive-team-learned/` (existing lessons)
+PM reads, in order:
+1. `.claude/rules/adaptive-team-rules.md`
+2. `.claude/adaptive-team-state/current-session.md`
+3. `.claude/adaptive-team-state/pending-pm-lessons.md` (staging — any already-drafted PM observations to promote?)
+4. `~/.claude/pm-user-lessons.md` (user-global)
+5. `.claude/adaptive-team-learned/pm-lessons.md` (project-PM)
+6. `TaskList`
 
-If already in PO mode from `/adaptive-team-start`, skip this step.
+### Step 1: Identify the Issue
 
-### Step 2: Diagnose
+PM synthesizes from conversation what went wrong. If ambiguous, PM asks user one focused question — not an interrogation.
 
-Review the conversation history to understand what went wrong. Look for:
-- What was the user trying to accomplish?
-- What actually happened?
-- Where did expectations diverge from results?
-- Was this a requirements, design, testing, implementation, or process issue?
+### Step 2: Invite Reviewer Diagnosis
 
-If the argument provides a description, use that as a starting point.
+If the issue touches a reviewer's lens, PM asks that reviewer (already spawned, or spawn now) for its diagnosis. Reviewer self-reflects: *was this my briefing gap, or a dev-side miss, or a design/test blind spot I didn't catch?*
 
-If the root cause is unclear from conversation context, ask the user **one focused question** — do not interrogate. Example: "It looks like the auth middleware failed because it wasn't tested against the new schema. Is that right, or was the issue somewhere else?"
+Reviewer drafts the lesson in plain English, role-file style, with a concrete example. Sends to PM.
 
-If a team is active (architect/sdet are running), consult them for their perspective before proposing lessons. The architect may spot a design gap the PO missed; the sdet may identify a testing blind spot. Incorporate their input into the diagnosis.
+### Step 3: PM Proposes to User
 
-### Step 3: Propose Lessons
-
-Present lessons to the user using this format:
+PM forwards each proposed lesson to the user **verbatim**, indicating target file:
 
 ```
-Learning moment: <short title>
-
-Trigger: <what happened>
-Root cause: <why it happened>
-
-Proposed lessons:
-
-1. → <file> — <lesson summary>
-   <full lesson text in the standard format>
-
-2. → <file> — <lesson summary>
-   <full lesson text in the standard format>
+Proposed lesson for <file>:
+<verbatim reviewer or PM draft>
 ```
 
-Route each lesson to the correct file using the root-cause routing table:
+PM may also propose its own pm-lessons if the issue was user-communication / process / question-timing / pattern-recognition failure.
 
-| Root Cause | File |
-|-----------|------|
-| Requirements/scope | `po-lessons.md` |
-| Design/architecture | `architect-lessons.md` |
-| Test coverage/quality | `sdet-lessons.md` |
-| Implementation | `dev-lessons.md` |
-| Team process | `team-lessons.md` |
-| Project-wide policy | `CLAUDE.md` |
+### Step 4: User Approves / Edits / Rejects
 
-A single issue may produce lessons for multiple files if multiple root causes contributed.
+User decides per lesson. PM writes only approved text. No shortcuts.
 
-### Step 4: User Accepts
+### Step 5: Write
 
-Wait for the user to accept, modify, or reject each proposed lesson. Then write accepted lessons to the corresponding files using the standard format:
+PM appends approved text to the target file using the standard format:
 
 ```markdown
-## YYYY-MM-DD: Short description
+## YYYY-MM-DD: Short title
 
-**Trigger:** What happened
-**Root cause:** Why it happened
-**Lesson:** What to do differently
+Rule or fact in one paragraph.
+
+**Why:** Reason / past incident.
+**How to apply:** When/where this kicks in.
 ```
 
-Confirm what was written and where.
+Routing table:
+
+| Root cause | File |
+|------------|------|
+| **User communication, style, question timing, tone** | **`~/.claude/pm-user-lessons.md`** (global — cross-project) |
+| Project-PM process, coordination, scope-reading for this project | `.claude/adaptive-team-learned/pm-lessons.md` |
+| Design, permissions/authz, coherence | `architect-lessons.md` |
+| Test strategy, coverage | `sdet-lessons.md` |
+| Prompt, model selection, agent design, LLM failure modes | `llm-lessons.md` |
+| Schema, query, migration, graph modeling | `database-lessons.md` |
+| Implementation patterns | `dev-lessons.md` |
+| Cross-cutting process | `team-lessons.md` |
+| Ideation patterns (what lands, what doesn't) | `curious-lessons.md` |
+| Project-wide policy (only when the moment warrants) | `CLAUDE.md` |
+
+**User-global vs project-PM split:** If the lesson is about *how to communicate with this user* (their style, preferences, friction patterns), route to `~/.claude/pm-user-lessons.md`. If it's about *how to run the process on this project* (scope reading, coordination cadence), route to project-level `pm-lessons.md`. When in doubt, ask the user at approval time.
+
+**CLAUDE.md receives additions only when a specific issue at that moment warrants project-wide policy.** Never as cleanup promotion from learning files.
 
 ## When to Use
 
-- An issue just surfaced and you want to capture the lesson now
-- After a failed deploy, broken test, user dissatisfaction, or process breakdown
-- Anytime during or outside a team session — works standalone or with an active team
+- Something went wrong and you want to capture the lesson now
+- After a failed delivery, user dissatisfaction, or process breakdown
+- Anytime — works standalone or with an active team
 
 ## When NOT to Use
 
-- Routine post-delivery retrospective — that's already built into `/adaptive-team-implement` Step 7
-- The issue is already captured in `adaptive-team-learned/` — check existing lessons first to avoid duplicates
+- Routine retrospective already covered in `/adaptive-team-implement` Step 9
+- The lesson already exists — check first to avoid duplicates

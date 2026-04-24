@@ -1,0 +1,24 @@
+# PM User-Interaction Lessons (Global)
+
+> Cross-project lessons about how the PM should work with this specific user.
+> All entries user-approved. Lives at `~/.claude/pm-user-lessons.md` so it spans projects.
+> Project-specific PM process lessons live at `<project>/.claude/adaptive-team-learned/pm-lessons.md`.
+
+Scope: user communication style, question timing, format preferences, interaction cadence, what this user wants PM to ask vs infer, tone adaptation, patterns in what causes friction vs what flows.
+
+Routing split:
+- This file (global) → how to *serve and communicate with* the user
+- Project `pm-lessons.md` → how PM runs *the process* on this specific project
+
+Entries follow the format:
+
+    ## YYYY-MM-DD: Short title
+
+    Rule or fact in one paragraph.
+
+    **Why:** Reason / past incident.
+    **How to apply:** When/where this kicks in.
+
+---
+
+(no entries yet)
