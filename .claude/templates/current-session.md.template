@@ -1,0 +1,29 @@
+# Active Session
+
+> PM keeps this file current. Reviewers do not write here.
+> PM re-reads this on recovery from compaction, at skill invocation, and whenever in doubt about session state.
+> Phase values are enumerated in `.claude/rules/adaptive-team-rules.md` § Session State. Do not invent new ones.
+
+## Team
+
+- architect: not spawned
+- sdet: not spawned
+- llm-expert: not spawned
+- database: not spawned
+- curious: not spawned
+- dev: none
+
+## In-flight
+
+Task: none
+Phase: idle
+Last verdict: none
+Awaiting: nothing
+
+## Decisions this session
+
+(empty)
+
+## Recent Activity (rolling tail — last 20 events)
+
+(empty)

@@ -2,6 +2,12 @@
 .claude/worktrees/
 .claude/settings.local.json
 
+# Adaptive Team runtime state — seeded from .claude/templates/ by /adaptive-team-init
+# Never commit lesson content, session state, or review findings to the framework repo
+.claude/adaptive-team-learned/
+.claude/adaptive-team-state/
+.claude/adaptive-team-reviews/
+
 # Environment
 .env
 .env.local

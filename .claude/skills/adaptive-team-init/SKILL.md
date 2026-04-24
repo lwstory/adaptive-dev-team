@@ -90,25 +90,31 @@ for skill in adaptive-team-consult adaptive-team-implement adaptive-team-learnin
   cp "$TEMP_DIR/adaptive-dev-team/.claude/skills/$skill/SKILL.md" ".claude/skills/$skill/"
 done
 
-# Seed learning files (only if missing)
-for lesson in pm-lessons architect-lessons sdet-lessons llm-lessons database-lessons dev-lessons team-lessons; do
+# Seed runtime directories from templates (only if missing)
+# Note: runtime dirs (adaptive-team-learned/, adaptive-team-state/, adaptive-team-reviews/)
+# are NOT committed to the framework repo. They hold per-project accumulated state. Templates
+# in .claude/templates/ are the canonical starting content; this step materializes them locally.
+mkdir -p .claude/adaptive-team-learned .claude/adaptive-team-state .claude/adaptive-team-reviews
+
+# Lesson seed files (only if missing — never overwrite accumulated lessons)
+for lesson in pm-lessons architect-lessons sdet-lessons llm-lessons database-lessons dev-lessons team-lessons curious-lessons; do
   [ ! -f ".claude/adaptive-team-learned/$lesson.md" ] && \
-    cp "$TEMP_DIR/adaptive-dev-team/.claude/adaptive-team-learned/$lesson.md" .claude/adaptive-team-learned/
+    cp "$TEMP_DIR/adaptive-dev-team/.claude/templates/$lesson.md.template" ".claude/adaptive-team-learned/$lesson.md"
 done
 
-# Seed session state + reviews README (only if missing)
+# Session state + pending PM lessons
 [ ! -f ".claude/adaptive-team-state/current-session.md" ] && \
-  cp "$TEMP_DIR/adaptive-dev-team/.claude/adaptive-team-state/current-session.md" .claude/adaptive-team-state/
+  cp "$TEMP_DIR/adaptive-dev-team/.claude/templates/current-session.md.template" .claude/adaptive-team-state/current-session.md
+[ ! -f ".claude/adaptive-team-state/pending-pm-lessons.md" ] && \
+  cp "$TEMP_DIR/adaptive-dev-team/.claude/templates/pending-pm-lessons.md.template" .claude/adaptive-team-state/pending-pm-lessons.md
+
+# Reviews README
 [ ! -f ".claude/adaptive-team-reviews/README.md" ] && \
-  cp "$TEMP_DIR/adaptive-dev-team/.claude/adaptive-team-reviews/README.md" .claude/adaptive-team-reviews/
+  cp "$TEMP_DIR/adaptive-dev-team/.claude/templates/reviews-README.md.template" .claude/adaptive-team-reviews/README.md
 
 # Project permissions (only if missing — never overwrite user's settings)
 [ ! -f ".claude/settings.json" ] && \
   cp "$TEMP_DIR/adaptive-dev-team/.claude/settings.json" .claude/
-
-# Pending-PM-lessons staging file (only if missing)
-[ ! -f ".claude/adaptive-team-state/pending-pm-lessons.md" ] && \
-  cp "$TEMP_DIR/adaptive-dev-team/.claude/adaptive-team-state/pending-pm-lessons.md" .claude/adaptive-team-state/
 
 # User-global PM-user-interaction lessons (only if missing — lives at ~/.claude/, not in project)
 [ ! -f "$HOME/.claude/pm-user-lessons.md" ] && \
